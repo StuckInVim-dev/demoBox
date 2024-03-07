@@ -19,7 +19,7 @@ for dir in $(find "children" -type d); do
     docker build -t $container_name .
 
     # LOG
-    echo "@@@Built child image $container_name from $dir successfully"
+    echo "Built child image $container_name from $dir successfully"
 
     # Construct the image path
     image_path="child_images/$container_name"
@@ -31,21 +31,21 @@ for dir in $(find "children" -type d); do
     docker save $container_name > "$image_path.tar"
 
     # LOG
-    echo "@@@Saved child image $container_name successfully"
+    echo "Saved child image $container_name successfully"
 done
 
 # Build the master image
 docker build -t $master_image_name .
 
 # LOG
-echo "@@@Built master image $master_image_name successfully"
+echo "Built master image $master_image_name successfully"
 
 # If the argument is "r", remove the old master container
 if [ "$1" = "r" ]; then
     docker rm -f $master_container_name
-    echo "@@@Removed old master container successfully"
+    echo "Removed old master container successfully"
 else
-    echo "@@@Skipping removal of old master container"
+    echo "Skipping removal of old master container"
 fi
 
 # Run the master container
@@ -58,4 +58,4 @@ docker run -it \
 $master_image_name
 
 # LOG
-echo "@@@Started master container $master_container_name successfully"
+echo "Started master container $master_container_name successfully"
