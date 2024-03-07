@@ -41,7 +41,7 @@ docker build -t $master_image_name .
 echo "@@@Built master image $master_image_name successfully"
 
 # If the argument is "r", remove the old master container
-if [ "$1" = "r" ]; then
+if [ "$1" = "-r" ]; then
     docker rm -f $master_container_name
     echo "@@@Removed old master container successfully"
 else
@@ -49,13 +49,13 @@ else
 fi
 
 # Run the master container
-docker run -it \
--p 2002:22 \
---name=$master_container_name \
---restart=unless-stopped \
--v /var/run/docker.sock:/var/run/docker.sock \
--v $(which docker):/usr/bin/dockerc \
-$master_image_name
+#docker run -it \
+#    -p 2002:22 \
+#    --name=$master_container_name \
+#    --restart=unless-stopped \
+#    -v /var/run/docker.sock:/var/run/docker.sock \
+#    -v $(which docker):/usr/bin/dockerc \
+#    $master_image_name
 
 # LOG
 echo "@@@Started master container $master_container_name successfully"
