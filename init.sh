@@ -151,3 +151,9 @@ fi
 
 
 
+if [ interactive="-d" ]; then
+    echo -e "\n\nContainer started in detached mode, you can run 'docker ps' to verify"
+fi
+
+
+echo -e "\n\nContainer started successfully, serving SSH on port $port"

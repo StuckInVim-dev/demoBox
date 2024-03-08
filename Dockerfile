@@ -3,6 +3,7 @@ FROM debian:latest
 # Set the environment variable for non-interactive installations
 ENV DEBIAN_FRONTEND=noninteractive
 
+
 # Copy the docker shell and setup script binary to the container and make them executable
 COPY dosh /bin/dosh
 COPY setup /bin/setup
@@ -19,8 +20,11 @@ RUN mkdir /var/run/sshd
 # Remove password requirement for sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# # Switch to non-root user
-# USER myuser
+# Customize the MOTD
+COPY motd.txt /etc/motd
+
+# Hide last login line when connecting via ssh
+RUN echo PrintLastLog no >> /etc/ssh/sshd_config
 
 # Change the environment variable for interactive installations
 ENV DEBIAN_FRONTEND= 
