@@ -3,6 +3,45 @@ set -e
 master_image_name="master-virtssh"
 master_container_name="master-virtssh"
 
+print_usage() {
+  cat << END
+USAGE:
+bash init.sh [OPTION]
+
+Opions:
+-i	  Launch master container interactively
+-p [PORT] Serve SSH on different port then 2002
+-r	  Run container with restart=unless_stopped
+-d	  Delete running master container
+END
+}
+
+# Set the default interectivity to false (Run detached)
+interactive="-d"
+
+# Set the default restart policy to no
+restart="no"
+
+# Set the default port to 2002
+port="2002"
+
+
+
+while getopts 'p:ird' flag; do
+  case "${flag}" in
+    p) port="${OPTARG}" ;;
+    i) interactive="-it" ;;
+    r) restart="unless-stopped" ;;
+    d) delete_old="true" ;;
+
+    *) print_usage
+    exit 1 ;;
+  esac
+done
+
+echo "@@@Port: $port", "Interactive: $interactive", "Restart: $restart", "Delete: $delete_old"
+
+
 for dir in $(find "children" -type d); do
     # Skip the root directory
     if [ "$dir" == "children" ]; then
@@ -40,8 +79,10 @@ docker build -t $master_image_name .
 # LOG
 echo "Built master image $master_image_name successfully"
 
-# If the argument is "r", remove the old master container
-if [ "$1" = "r" ]; then
+
+
+
+if [ "$delete_old" = "true" ]; then
     docker rm -f $master_container_name
     echo "Removed old master container successfully"
 else
@@ -49,10 +90,10 @@ else
 fi
 
 # Run the master container
-docker run -it \
-    -p 2002:22 \
+docker run $interactive \
+    -p $port:22 \
     --name=$master_container_name \
-    --restart=unless-stopped \
+    --restart=$restart \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(which docker):/usr/bin/dockerc \
     $master_image_name
