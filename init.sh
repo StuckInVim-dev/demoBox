@@ -13,6 +13,7 @@ Options:
 -p [PORT] Serve SSH on different port then 2002
 -r	  Run container with restart=unless_stopped
 -d	  Delete running master container
+-h	  Print this help message
 END
 }
 
@@ -27,12 +28,14 @@ port="2002"
 
 
 
-while getopts 'p:ird' flag; do
+while getopts 'p:irdh' flag; do
   case "${flag}" in
     p) port="${OPTARG}" ;;
     i) interactive="-it" ;;
     r) restart="unless-stopped" ;;
     d) delete_old="true" ;;
+    h) print_usage
+    exit 0 ;;
 
     *) print_usage
     exit 1 ;;
