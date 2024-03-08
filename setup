@@ -5,12 +5,8 @@
 # Stop the script on command error
 set -e
 
-echo set!
-
 # Set the directory for the source of the child images
 image_directory="/mnt/images/"
-
-echo image!
 
 # Install docker
 #sudo apt install docker.io -y
@@ -18,13 +14,10 @@ echo image!
 # For each image in the image directory
 #for image_path in $(find "$image_directory" -maxdepth 1  -type f); do
 for image_path in /mnt/images/*.tar; do
-    echo "for $image_path"
     # Load the image into docker
     sudo /usr/bin/dockerc load < "$image_path"
-    echo loaded!
     # Get the name of the image for user creation
     name=$(echo "$image_path" | sed "s|^$image_directory||" | sed "s|^virtssh-children||" | sed "s|\.tar$||"  )
-    echo "got $name"
     # LOG
     echo "Attempting to create user: $name"
 
