@@ -50,12 +50,12 @@ fi
 
 # Run the master container
 docker run -it \
--p 2002:22 \
---name=$master_container_name \
---restart=unless-stopped \
--v /var/run/docker.sock:/var/run/docker.sock \
--v $(which docker):/usr/bin/dockerc \
-$master_image_name
+    -p 2002:22 \
+    --name=$master_container_name \
+    --restart=unless-stopped \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $(which docker):/usr/bin/dockerc \
+    $master_image_name
 
 # LOG
 echo "@@@Started master container $master_container_name successfully"
