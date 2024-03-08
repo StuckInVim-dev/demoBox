@@ -9,17 +9,15 @@ set -e
 image_directory="/mnt/images/"
 
 # Install docker
-sudo apt install docker.io -y
+#sudo apt install docker.io -y
 
 # For each image in the image directory
-for image_path in $(find "$image_directory" -maxdepth 1  -type f); do
-
+#for image_path in $(find "$image_directory" -maxdepth 1  -type f); do
+for image_path in /mnt/images/*.tar; do
     # Load the image into docker
-    sudo docker load < "$image_path"
-
+    sudo /usr/bin/dockerc load < "$image_path"
     # Get the name of the image for user creation
-    name=$(echo "$image_path" | sed "s|^$image_directory||" |  sed "s|\.tar$||"  )
-
+    name=$(echo "$image_path" | sed "s|^$image_directory||" | sed "s|^virtssh-children||" | sed "s|\.tar$||"  )
     # LOG
     echo "Attempting to create user: $name"
 
@@ -31,7 +29,7 @@ for image_path in $(find "$image_directory" -maxdepth 1  -type f); do
     sudo adduser $name sudo
 
     # LOG
-    echo "Created user: $name, from image: $image_path"
+    echo "Created user: $name, from image: $image_path";
 
 done
 

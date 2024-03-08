@@ -14,12 +14,12 @@ Follow the steps and run the commands
 You just need to have docker installed and have your user be in the `docker` group
 Since it's written in Bash, it should work on any version of Linux
 ## How it works
- The setup of all the containers is done by the `init.sh` script, it does the following steps every time when ran:
- 1.  Builds all the images from the dockerfiles in `children/*/Dockerfile`  
+The setup of all the containers is done by the `init.sh` script, it does the following steps every time when ran:
+1. Builds all the images from the dockerfiles in `children/*/Dockerfile`  
 2. Builds the master image and copies all the images built in the previous step into it
 3. Runs the master container
 
- The `setup` script runs inside the `master` container
+The `setup` script runs inside the `master` container
 
 4. Installs docker (This step will be moved into the dockerfile in future releases )
 5. Loads the images into docker
