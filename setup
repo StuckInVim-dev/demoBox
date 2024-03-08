@@ -17,7 +17,7 @@ for image_path in /mnt/images/*.tar; do
     # Load the image into docker
     sudo /usr/bin/dockerc load < "$image_path"
     # Get the name of the image for user creation
-    name=$(echo "$image_path" | sed "s|^$image_directory||" | sed "s|^virtssh-children||" | sed "s|\.tar$||"  )
+    name=$(echo "$image_path" | sed "s|^$image_directory||" | sed "s|^demobox-child-||" | sed "s|\.tar$||"  )
     # LOG
     echo "Attempting to create user: $name"
 

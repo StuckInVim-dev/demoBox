@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
-master_image_name="master-virtssh"
-master_container_name="master-virtssh"
+master_image_name="demobox-master"
+master_container_name="demobox-master"
 
 print_usage() {
   cat << END
@@ -52,7 +52,7 @@ for dir in $(find "children" -type d); do
     cd $dir
 
     # Construct the container name in the format: "childrenchild"
-    container_name="virtssh-$(echo "$dir" | tr -d '/')"
+    container_name="demobox-child-$(echo "$dir" | tr -d '/' | sed "s|^children||")"
 
     # Build the child image
     docker build -t $container_name .
@@ -87,7 +87,10 @@ master_exists=false
 if [ "$(docker ps -aq -f name=^${master_container_name}$)" ]; then
 
     # Set the master exists flag to true
-    master_exists=true
+    master_exists="true"
+
+    # LOG
+    echo "Detected existing master container"
 fi
 
 
@@ -103,6 +106,9 @@ if [ "$delete_old" = "true" ]; then
 
         # Remove the container
         docker rm "$master_container_name"
+
+        # Set the master exists variable to false
+        master_exists="false"
 
         # LOG
         echo "Container '${master_container_name}' has been removed as requested"

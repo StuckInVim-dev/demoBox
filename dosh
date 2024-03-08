@@ -7,5 +7,5 @@ sudo /usr/bin/dockerc run \
 --pids-limit=100 \
 --no-healthcheck \
 -it \
-virtssh-children$USER
+demobox-child-$USER
 
