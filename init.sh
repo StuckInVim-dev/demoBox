@@ -41,7 +41,7 @@ docker build -t $master_image_name .
 echo "@@@Built master image $master_image_name successfully"
 
 # If the argument is "r", remove the old master container
-if [ "$1" = "-r" ]; then
+if [ "$1" = "r" ]; then
     docker rm -f $master_container_name
     echo "@@@Removed old master container successfully"
 else
