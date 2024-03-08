@@ -8,7 +8,7 @@ print_usage() {
 USAGE:
 bash init.sh [OPTION]
 
-Opions:
+Options:
 -i	  Launch master container interactively
 -p [PORT] Serve SSH on different port then 2002
 -r	  Run container with restart=unless_stopped
