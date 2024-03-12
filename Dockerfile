@@ -33,7 +33,13 @@ ENV DEBIAN_FRONTEND=
 EXPOSE 22
 
 # Copy the archived image of the child container (To prevent invalidating the cache)
-COPY ./child_images /mnt/images
+# COPY ./child_images /mnt/images REMOVE
+
+# Create a directory for the dockerfile source directories
+RUN mkdir /mnt/source
+
+# Change to the source directory
+WORKDIR /mnt/
 
 # Run the setup script
-CMD ["/bin/setup"]
+CMD ["/bin/bash"]

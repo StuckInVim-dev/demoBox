@@ -5,17 +5,44 @@
 # Stop the script on command error
 set -e
 
-# Set the directory for the source of the child images
-image_directory="/mnt/images/"
 
-# For each image in the image directory
-for image_path in /mnt/images/*.tar; do
-    # Load the image into docker
-    sudo /usr/bin/dockerc load < "$image_path"
-    # Get the name of the image for user creation
-    name=$(echo "$image_path" | sed "s|^$image_directory||" | sed "s|^demobox-child-||" | sed "s|\.tar$||"  )
+##NEW CODE START
+source_directory="source"
+
+for dir in $(find "$source_directory" -type d); do
+    # Skip the root directory
+    if [ "$dir" == "$source_directory" ]; then
+        continue
+    fi
+
+    # Change into the child directory
+    cd $dir
+
+    # Construct the container name in the format: "childrenchild"
+    name=$(echo "$dir" | tr -d '/' | sed "s|^$source_directory||")
+    container_name="demobox-child-$name"
+
+    # Build the child image
+    /usr/bin/dockerc build -t $container_name .
+
+    # LOG
+    echo "Built child image $container_name from $dir successfully"
+
+    # # Construct the image path REMOVE
+    # image_path="child_images/$container_name"
+
+    # Return back to the root of the project
+    cd -
+
+    # # Save the child image into the archive REMOVE
+    # docker save $container_name > "$image_path.tar"
+
+    # # LOG REMOVE
+    # echo "Saved child image $container_name successfully"
+
     # LOG
     echo "Attempting to create user: $name"
+
 
     # Create a user with the name of the image (+set shell and create home)
     sudo useradd -m -s /bin/dosh $name 
@@ -25,9 +52,40 @@ for image_path in /mnt/images/*.tar; do
     sudo adduser $name sudo
 
     # LOG
-    echo "Created user: $name, from image: $image_path";
+    echo "Created user: $name succesfully";
+
 
 done
+
+
+##NEW CODE END
+
+
+
+
+# # Set the directory for the source of the child images REMOVE
+# image_directory="/mnt/images/"
+
+# # For each image in the image directory
+# for image_path in /mnt/images/*.tar; do
+#     # Load the image into docker
+#     sudo /usr/bin/dockerc load < "$image_path"
+#     # Get the name of the image for user creation
+#     name=$(echo "$image_path" | sed "s|^$image_directory||" | sed "s|^demobox-child-||" | sed "s|\.tar$||"  )
+#     # LOG
+#     echo "Attempting to create user: $name"
+
+#     # Create a user with the name of the image (+set shell and create home)
+#     sudo useradd -m -s /bin/dosh $name 
+#     # Set the password of the user
+#     echo "$name:$name" | chpasswd
+#     # Add the user to the sudo group
+#     sudo adduser $name sudo
+
+#     # LOG
+#     echo "Created user: $name, from image: $image_path";
+
+# done
 
 
 sudo /usr/sbin/sshd -D
