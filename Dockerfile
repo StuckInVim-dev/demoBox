@@ -32,9 +32,6 @@ ENV DEBIAN_FRONTEND=
 # Expose ssh port
 EXPOSE 22
 
-# Copy the archived image of the child container (To prevent invalidating the cache)
-# COPY ./child_images /mnt/images REMOVE
-
 # Create a directory for the dockerfile source directories
 RUN mkdir /mnt/source
 
