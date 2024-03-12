@@ -42,4 +42,4 @@ RUN mkdir /mnt/source
 WORKDIR /mnt/
 
 # Run the setup script
-CMD ["/bin/bash"]
+CMD ["/bin/setup"]
