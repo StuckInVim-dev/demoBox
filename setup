@@ -5,6 +5,12 @@
 # Stop the script on command error
 set -e
 
+# Add docker group
+groupadd docker
+
+# Set the docker.sock file to the docker group
+chgrp docker /var/run/docker.sock
+
 source_directory="source"
 
 for dir in $(find "$source_directory" -type d); do
@@ -34,16 +40,16 @@ for dir in $(find "$source_directory" -type d); do
 
 
     # Create a user with the name of the image (+set shell and create home)
-    sudo useradd -m -s /bin/dosh $name 
+    useradd -m -s /bin/dosh $name 
     # Set the password of the user
     echo "$name:$name" | chpasswd
-    # Add the user to the sudo group
-    sudo adduser $name sudo
 
+    echo "attempting adding User $name to docker group"
+    usermod -aG docker $name
     # LOG
     echo "Created user: $name succesfully";
 
 
 done
 
-sudo /usr/sbin/sshd -D
+/usr/sbin/sshd -D
