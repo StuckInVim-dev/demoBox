@@ -7,5 +7,7 @@
 --pids-limit=100 \
 --no-healthcheck \
 -it \
+--rm \
+--runtime="$(cat /etc/runtime)" \
 demobox-child-$USER
 

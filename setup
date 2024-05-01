@@ -5,6 +5,10 @@
 # Stop the script on command error
 set -e
 
+# TODO: Pass the runtime setting as an argument instead of saving it to a file
+# Save the runtime setting to a file
+echo $RUNTIME > /etc/runtime
+
 # Add docker group
 groupadd docker
 

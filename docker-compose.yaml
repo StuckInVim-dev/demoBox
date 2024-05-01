@@ -9,6 +9,8 @@ services:
       - /path/to/children/directory:/mnt/source # Enter the part of the directory where the children are
     ports:
       - "2002:22" 
+    environment:
+      - RUNTIME=runc # Change this to "sysbox-runc" if you want to use sysbox (for DIND support)
     deploy:
       mode: replicated
       replicas: 1
