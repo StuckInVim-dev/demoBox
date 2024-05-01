@@ -9,7 +9,7 @@ Follow the steps and run the commands
 1.  `git clone https://github.com/StuckInVim-dev/demoBox`
 2. `cd demoBox`
 3. Place directories with the dockerfiles into the `children` directory (There is already one in `children/demo`)
-4. Deploy the container by running `docker-compose up -d`
+4. Deploy the container by running `docker-compose up`
 ## Requirements
 You just need to have docker installed and have your user be in the `docker` group
 
