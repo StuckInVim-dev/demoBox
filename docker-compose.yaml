@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  demobox:
+    build: .
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/dockerc
+      - /path/to/children/directory:/mnt/source
+    ports:
+      - "2002:22"
+    deploy:
+      mode: replicated
+      replicas: 1
