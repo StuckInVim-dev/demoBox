@@ -13,6 +13,8 @@ Follow the steps and run the commands
 ## Requirements
 You just need to have docker installed and have your user be in the `docker` group
 
+If You want to run Docker in Docker (DIND) You will need to have the [sysbox runtime](https://github.com/nestybox/sysbox/releases/) installed on your host machine 
+
 
 ## How it works
 The setup of all the containers is done by the `setup` script, it does the following steps every time when ran:
