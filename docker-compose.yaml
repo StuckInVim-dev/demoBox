@@ -2,13 +2,13 @@ version: '3.8'
 services:
   demobox:
     build: .
-    restart: "no"
-    volumes:
+    restart: "no" # Make this "unless-stopped" if you want it to restart on failure
+    volumes: # Change the sock and binary pats if they are different on your system
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/dockerc
-      - /path/to/children/directory:/mnt/source
+      - /path/to/children/directory:/mnt/source # Enter the part of the directory where the children are
     ports:
-      - "2002:22"
+      - "2002:22" 
     deploy:
       mode: replicated
       replicas: 1
