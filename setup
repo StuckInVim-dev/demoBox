@@ -13,15 +13,15 @@ chgrp docker /var/run/docker.sock
 
 source_directory="source"
 
-# Check if the source directory is empty
-if [ -z "$(ls -A $source_directory)" ]; then
+# # Check if the source directory is empty
+# if [ -z "$(ls -A $source_directory)" ]; then
 
-    # Crash the script and container
-    echo "The source directory is empty"
-    echo "Please check your volume patsh"
-    echo "Exiting..."
-    exit 1
-fi
+#     # Crash the script and container
+#     echo "The source directory is empty"
+#     echo "Please check your volume path"
+#     echo "Exiting..."
+#     exit 1
+# fi
 
 
 for dir in $(find "$source_directory" -type d); do
