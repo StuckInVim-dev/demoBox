@@ -9,7 +9,8 @@ Follow the steps and run the commands
 1.  `git clone https://github.com/StuckInVim-dev/demoBox`
 2. `cd demoBox`
 3. Place directories with the dockerfiles into the `children` directory (There is already one in `children/demo`)
-4. Deploy the container by running `docker-compose up --force-recreate --build` 
+4. (Optional) If you want to customize the command that starts the container when logging in, make a directory in `custom_children` and add an extra file to it with the name `dosh`. This file will be used as the user's shell.
+5. Deploy the container by running `docker compose up --force-recreate --build` 
 ## Requirements
 You just need to have docker installed and have your user be in the `docker` group
 
