@@ -11,56 +11,90 @@ groupadd docker
 # Set the docker.sock file to the docker group
 chgrp docker /var/run/docker.sock
 
-source_directory="source"
+children_source_directory="source"
+custom_children_source_directory="custom_source"
 
-# # Check if the source directory is empty
-# if [ -z "$(ls -A $source_directory)" ]; then
-
-#     # Crash the script and container
-#     echo "The source directory is empty"
-#     echo "Please check your volume path"
-#     echo "Exiting..."
-#     exit 1
-# fi
-
-
-for dir in $(find "$source_directory" -type d); do
-    # Skip the root directory
-    if [ "$dir" == "$source_directory" ]; then
-        continue
-    fi
-
-    # Change into the child directory
-    cd $dir
-
-    # Construct the container name in the format: "childrenchild"
-    name=$(echo "$dir" | tr -d '/' | sed "s|^$source_directory||")
-    container_name="demobox-child-$name"
-
-    # Build the child image
-    /usr/bin/dockerc build -t $container_name .
-
-    # LOG
-    echo "Built child image $container_name from $dir successfully"
-
-    # Return back to the root of the project
-    cd -
-
-    # LOG
-    echo "Attempting to create user: $name"
+# Check if both source directories are empty
+if [ -z "$(ls -A $children_source_directory)" ] && [ -z "$(ls -A $custom_children_source_directory)" ]; then
+    # Crash the script and container
+    echo "Both source directories are empty"
+    echo "Please check your volume paths"
+    echo "Exiting..."
+    exit 1
+fi
 
 
-    # Create a user with the name of the image (+set shell and create home)
-    useradd -m -s /bin/dosh $name 
-    # Set the password of the user
-    echo "$name:$name" | chpasswd
 
-    echo "attempting adding User $name to docker group"
-    usermod -aG docker $name
-    # LOG
-    echo "Created user: $name succesfully";
+function process_directory(){
+    local source_directory=$1
+    local type=$2
+
+    for dir in $(find "$source_directory" -type d); do
+        # Skip the root directory
+        if [ "$dir" == "$source_directory" ]; then
+            continue
+        fi
+
+        # Change into the child directory
+        cd $dir
+
+        # Construct the container name in the format: "childrenchild"
+        name=$(echo "$dir" | tr -d '/' | sed "s|^$source_directory||")
+        container_name="demobox-child-$name"
+
+        # Build the child image
+        /usr/bin/dockerc build -t $container_name .
+
+        # LOG
+        echo "Built child image $container_name from $dir successfully"
+
+        # Return back to the root of the project
+        cd -
+
+        # LOG
+        echo "Attempting to create user: $name"
+
+        # Check if the type is standard or custom
+        if [ "$type" == "standard" ]; then
+            # Create a user with the name of the image (+set shell and create home)
+            useradd -m -s /bin/dosh $name 
+            # Set the password of the user
+            echo "$name:$name" | chpasswd
+
+            echo "attempting adding User $name to docker group"
+            usermod -aG docker $name
+            # LOG
+            echo "Created user: $name succesfully";
+
+        # If it's custom set up it's own dosh shell
+        elif [ "$type" == "custom" ]; then
+
+            # Create a user with the name of the image (+set shell and create home)
+            useradd -m -s /home/$name/dosh $name 
+
+            # Copy the dosh shell to the user's home directory
+            cp $dir/dosh /home/$name/dosh
+            
+            chmod +x /home/$name/dosh
+
+            # Set the password of the user
+            echo "$name:$name" | chpasswd
+
+            echo "attempting adding User $name to docker group"
+            usermod -aG docker $name
+            # LOG
+            echo "Created user: $name succesfully";
+        else
+            echo "Invalid type"
+            echo "Provided type: $type"
+            exit 1
+        fi
 
 
-done
+    done
+}
+
+process_directory $children_source_directory "standard"
+process_directory $custom_children_source_directory "custom"
 
 /usr/sbin/sshd -D
