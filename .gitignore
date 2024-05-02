@@ -163,5 +163,9 @@ cython_debug/
 children/*
 !children/demo
 
+# Custom User created Dockerfiles
+custom_children/**
+!custom_children/.gitkeep
+
 # User created Docker-compose files
 custom-docker-compose.yaml
