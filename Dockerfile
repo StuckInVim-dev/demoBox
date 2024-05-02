@@ -15,9 +15,6 @@ COPY setup /bin/setup
 RUN chmod +x /bin/dosh 
 RUN chmod +x /bin/setup
 
-# Create directory for ssh (probably not necessary)
-RUN mkdir /var/run/sshd
-
 # Customize the MOTD
 COPY motd.txt /etc/motd
 
@@ -29,9 +26,6 @@ ENV DEBIAN_FRONTEND=
 
 # Expose ssh port
 EXPOSE 22
-
-# Create a directory for the dockerfile source directories
-RUN mkdir /mnt/source
 
 # Change to the source directory
 WORKDIR /mnt/
