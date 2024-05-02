@@ -19,7 +19,7 @@ RUN chmod +x /bin/setup
 RUN mkdir /var/run/sshd
 
 # Customize the MOTD
-COPY motd.txt /etc/motd
+COPY motd.txt /etc/custom_motd
 
 # Hide last login line when connecting via ssh
 RUN echo PrintLastLog no >> /etc/ssh/sshd_config
@@ -29,6 +29,8 @@ ENV DEBIAN_FRONTEND=
 
 # Expose ssh port
 EXPOSE 22
+
+RUN sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 
 # Change to the source directory
 WORKDIR /mnt/
