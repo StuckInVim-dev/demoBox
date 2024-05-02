@@ -15,6 +15,9 @@ COPY setup /bin/setup
 RUN chmod +x /bin/dosh 
 RUN chmod +x /bin/setup
 
+# Create directory for ssh
+RUN mkdir /var/run/sshd
+
 # Customize the MOTD
 COPY motd.txt /etc/motd
 
