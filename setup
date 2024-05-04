@@ -6,10 +6,10 @@
 set -e
 
 # Add docker group
-groupadd docker
+groupadd docker_group
 
 # Set the docker.sock file to the docker group
-chgrp docker /var/run/docker.sock
+chgrp docker_group /var/run/docker.sock
 
 children_source_directory="source"
 custom_children_source_directory="custom_source"
@@ -62,7 +62,7 @@ function process_directory(){
             echo "$name:$name" | chpasswd
 
             echo "attempting adding User $name to docker group"
-            usermod -aG docker $name
+            usermod -aG docker_group $name
             # LOG
             echo "Created user: $name succesfully";
 
@@ -81,7 +81,7 @@ function process_directory(){
             echo "$name:$name" | chpasswd
 
             echo "attempting adding User $name to docker group"
-            usermod -aG docker $name
+            usermod -aG docker_group $name
             # LOG
             echo "Created user: $name succesfully";
         else
