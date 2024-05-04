@@ -8,6 +8,7 @@ cat /etc/custom_motd
 --pids-limit=100 \
 --no-healthcheck \
 -it \
+--hostname=$USER \
 --rm \
 demobox-child-$USER
 
