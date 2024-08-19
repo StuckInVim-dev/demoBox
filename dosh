@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 cat /etc/custom_motd
 /usr/bin/dockerc run \
 --memory=256m \
