@@ -43,7 +43,7 @@ function process_directory(){
         container_name="demobox-child-$name"
 
         # Build the child image
-        /usr/bin/dockerc build -t $container_name .
+        /usr/bin/docker build -t $container_name .
 
         # LOG
         echo "Built child image $container_name from $dir successfully"

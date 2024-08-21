@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 cat /etc/custom_motd
-/usr/bin/dockerc run \
+/usr/bin/docker run \
 --memory=256m \
 --memory-swap=256m \
 --kernel-memory=128m \
