@@ -11,8 +11,8 @@ groupadd docker_group
 # Set the docker.sock file to the docker group
 chgrp docker_group /var/run/docker.sock
 
-children_source_directory="source"
-custom_children_source_directory="custom_source"
+children_source_directory="dockerfiles/default_dosh"
+custom_children_source_directory="dockerfiles/custom_dosh"
 
 # Check if both source directories are empty
 if [ -z "$(ls -A $children_source_directory)" ] && [ -z "$(ls -A $custom_children_source_directory)" ]; then
@@ -39,7 +39,7 @@ function process_directory(){
         cd $dir
 
         # Construct the container name in the format: "childrenchild"
-        name=$(echo "$dir" | tr -d '/' | sed "s|^$source_directory||")
+        name=$(basename "$dir")
         container_name="demobox-child-$name"
 
         # Build the child image

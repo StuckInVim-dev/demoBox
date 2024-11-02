@@ -1,10 +1,10 @@
 # User created Dockerfiles
-children/*
-!children/demo
+dockerfiles/default_dosh/*
+!dockerfiles/default_dosh/demo
 
 # Custom User created Dockerfiles
-custom_children/**
-!custom_children/.gitkeep
+dockerfiles/custom_dosh/**
+!dockerfiles/custom_dosh/.gitkeep
 
 # User created Docker-compose files
 custom-docker-compose.yaml

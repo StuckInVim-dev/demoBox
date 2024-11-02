@@ -6,8 +6,8 @@ services:
     volumes: # Change the sock and binary paths if they are different on your system
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
-      - ./children:/mnt/source 
-      - ./custom_children:/mnt/custom_source 
+      - ./dockerfiles/default_dosh:/mnt/dockerfiles/default_dosh 
+      - ./dockerfiles/custom_dosh:/mnt/dockerfiles/custom_dosh 
     ports:
       - "2002:22" 
     deploy:
